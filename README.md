@@ -20,8 +20,8 @@ If the goal state can be found, then the program will terminate and output some 
 ##Installing and Running
 To get ASTAR and run it, please open up a terminal and run these commands:
 ```
-git clone https://github.com/ykamo001/AI.git
-cd ASTAR/
+git clone https://github.com/ykamo001/astar.git
+cd astar/
 make
 ./src/astar.out
 ```
