@@ -1,10 +1,10 @@
-#ASTAR (A*)
+##ASTAR (A*)
 `ASTAR` is an implementation of the ever-so-popular ['A*'](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm, and I have formatted it such that it can be used to determine if a solution for an 8-puzzle exists or not, and how many minimal moves are needed to achieve the goal. 
 An [8-puzzle](https://en.wikipedia.org/wiki/15_puzzle) is a version of the classic 15-puzzle game, also referred to as the N-puzzle, where you have the numbers 1-8, and an empty space, all out of order, and have to arrange them sequentially such that it starts with 1, and ends with the empty space.
 
 Here's an example of a starting state and the final result:
 
-![alt text](http://pravj.github.io/assets/development-story-of-puzzl/states.jpg)
+![alt text](https://pravj.github.io/images/states.jpg)
 
 With my implementation, after you have entered in a desired puzzle to solve, you are able to pick a search algorithm.
 Each of these algorithms find the solution in a different way, each using a different heuristic score. 
