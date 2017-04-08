@@ -1,5 +1,4 @@
-#ASTAR (A*)
-
+# ASTAR (A*)
 `ASTAR` is an implementation of the ever-so-popular ['A*'](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm, and I have formatted it such that it can be used to determine if a solution for an 8-puzzle exists or not, and how many minimal moves are needed to achieve the goal. 
 An [8-puzzle](https://en.wikipedia.org/wiki/15_puzzle) is a version of the classic 15-puzzle game, also referred to as the N-puzzle, where you have the numbers 1-8, and an empty space, all out of order, and have to arrange them sequentially such that it starts with 1, and ends with the empty space.
 
