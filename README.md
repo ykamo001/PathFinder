@@ -48,15 +48,15 @@ Let's just take a look at the values and numbers obtained from running all three
 4 _ 6 <br/>
 7 5 8 <br/>
 
-1. **Uniform cost search:**
+1. ** Uniform cost search: **
       * _Goal_ = found
       * _Nodes expanded_ = 9
       * _Max number of nodes in queue_ = 8
-2. **A* with misplaced heuristic:**
+2. ** A\* with misplaced heuristic: **
       * _Goal_ = found
       * _Nodes expanded_ = 2
       * _Max number of nodes in queue_ = 5
-3. **A* with manhattan distance:**
+3. ** A\* with manhattan distance: **
       * _Goal_ = found
       * _Nodes expanded_ = 2
       * _Max number of nodes in queue_ = 5
@@ -73,11 +73,11 @@ But let's take another look at another random puzzle with the following sequence
     * _Goal_ = found
     * _Nodes expanded_ = 37847  
     * _Max number of nodes in queue_ = 26482
-2. **A* with misplaced heuristic:**
+2. **A\* with misplaced heuristic:**
     * _Goal_ = found
     * _Nodes expanded_ = 1405
     * _Max number of nodes in queue_ = 958
-3. **A* with manhattan distance:**
+3. **A\* with manhattan distance:**
     * _Goal_ = found
     * _Nodes expanded_ = 207
     * _Max number of nodes in queue_ = 151
