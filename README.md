@@ -17,7 +17,7 @@ The 3 algorithms you can choose from are:
 
 If the goal state can be found, then the program will terminate and output some information regarding the search. For now, the nodes that are expaned are not outputted, but if you so desire, you can uncomment the code and it will output each state that is expanded in order until completion.
 
-##Installing and Running
+## Installing and Running
 To get ASTAR and run it, please open up a terminal and run these commands:
 ```
 git clone https://github.com/ykamo001/astar.git
