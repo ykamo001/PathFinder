@@ -1,10 +1,19 @@
-# ASTAR (A*)
-`ASTAR` is an implementation of the ever-so-popular ['A*'](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm, and I have formatted it such that it can be used to determine if a solution for an 8-puzzle exists or not, and how many minimal moves are needed to achieve the goal. 
+# PathFinder
+PathFinder is a Big Data search application that implements Artificial Intelligence properties, like the ['A*'](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm and ['admissible heuristics'](https://en.wikipedia.org/wiki/Admissible_heuristic) to determine if a solution for an 8-puzzle exists or not, and determines the path needed to reach the solution with minimal moves. 
 An [8-puzzle](https://en.wikipedia.org/wiki/15_puzzle) is a version of the classic 15-puzzle game, also referred to as the N-puzzle, where you have the numbers 1-8, and an empty space, all out of order, and have to arrange them sequentially such that it starts with 1, and ends with the empty space.
 
 Here's an example of a starting state and the final result:
 
 ![alt text](https://pravj.github.io/images/states.jpg)
+
+## Installing and Running
+To get ASTAR and run it, please open up a terminal and run these commands:
+```
+git clone https://github.com/ykamo001/PathFinder.git
+cd PathFinder/
+make
+./src/astar.out
+```
 
 With my implementation, after you have entered in a desired puzzle to solve, you are able to pick a search algorithm.
 Each of these algorithms find the solution in a different way, each using a different heuristic score. 
@@ -16,15 +25,6 @@ The 3 algorithms you can choose from are:
 3. A* With [Manhatten Heuristic](https://heuristicswiki.wikispaces.com/Manhattan+Distance)
 
 If the goal state can be found, then the program will terminate and output some information regarding the search. For now, the nodes that are expaned are not outputted, but if you so desire, you can uncomment the code and it will output each state that is expanded in order until completion.
-
-## Installing and Running
-To get ASTAR and run it, please open up a terminal and run these commands:
-```
-git clone https://github.com/ykamo001/astar.git
-cd astar/
-make
-./src/astar.out
-```
 
 ## Findings
 From running multiple random puzzles, it can be seen that when using my algorithm, the Manhattan distance A* is the fastest and most optimal choice to find the goal state. 
