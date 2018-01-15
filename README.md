@@ -1,5 +1,5 @@
 # PathFinder
-PathFinder is a Big Data search application that implements Artificial Intelligence properties, like the ['A*'](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm and ['admissible heuristics'](https://en.wikipedia.org/wiki/Admissible_heuristic) to determine if a solution for an 8-puzzle exists or not, and determines the path needed to reach the solution with minimal moves. 
+PathFinder is a Big Data search application that implements Artificial Intelligence properties like the ['A*'](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithm and ['admissible heuristics'](https://en.wikipedia.org/wiki/Admissible_heuristic) to determine if a solution for an 8-puzzle exists or not, and determines the path needed to reach the solution with minimal moves. 
 An [8-puzzle](https://en.wikipedia.org/wiki/15_puzzle) is a version of the classic 15-puzzle game, also referred to as the N-puzzle, where you have the numbers 1-8, and an empty space, all out of order, and have to arrange them sequentially such that it starts with 1, and ends with the empty space.
 
 Here's an example of a starting state and the final result:
