@@ -4,6 +4,9 @@
 #include <string>
 #include <list>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <map>
 
 using namespace std;
 
@@ -101,50 +104,43 @@ void orderSort(queue<Node> &input)  //use this function to setup and call for me
 	}
 }
 
-int manDist(vector<int> a, vector<int> &b)		//use this function to find the total manhatan distance of node state
+int manDist(vector<int> &a, vector<int> &b)		//use this function to find the total manhatan distance of node state
 {
-	int goal[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
-	int comp[3][3] = {{a.at(0), a.at(1), a.at(2)}, {a.at(3), a.at(4), a.at(5)}, {a.at(6), a.at(7), a.at(8)}};
-	int totaldiff = 0;
-	int deltx = 0;
-	int delty = 0;
-	int look = 0;
-	for(int k = 0; k < 3; ++k)
-	{
-		for(int l = 0; l < 3; ++l)
-		{
-			look = comp[k][l];
-			for(int i = 0; i < 3; ++i)
-			{
-				for(int j = 0; j < 3; ++j)
-				{
-					if(goal[i][j] == look)
-					{
-						deltx = abs(k - i);
-						delty = abs(l - j);
-						totaldiff = (totaldiff + (deltx + delty));
-					}
-				}
-			}
-		}
+	map<int, pair<int, int> > grid;
+	map<int, pair<int, int> >::iterator itr;
+	int x, y, deltaX, deltaY, totaldiff;
+
+	for(int i = 0; i < b.size(); i++){
+		x = i/3;
+		y = i%3;
+		grid.insert(pair<int, pair<int, int> >(b.at(i), pair<int, int>(x, y)));
 	}
+
+	totaldiff = 0;
+	for(int i = 0; i < a.size(); i++){
+		x = i/3;
+		y = i%3;
+		itr = grid.find(a.at(i));
+		deltaX = abs(x - itr->second.first);
+		deltaY = abs(y - itr->second.second);
+		totaldiff = totaldiff + (deltaX + deltaY);
+	}
+
 	return totaldiff;
 }
 
-int missPlaced(vector<int> a, vector<int> &b)	//use this function to find the heuristic score of miss placed tiles of node state
+int missPlaced(vector<int> &a, vector<int> &b)	//use this function to find the heuristic score of miss placed tiles of node state
 {
 	int diff = 0;
-	for(int i = 0; i < a.size(); ++i)
-	{
-		if(a.at(i) != b.at(i))
-		{
+	for(int i = 0; i < a.size(); ++i) {
+		if(a.at(i) != b.at(i)) {
 			++diff;
 		}
 	}
 	return diff;
 }
 
-void move(Node expand, queue<Node> &a, vector<int> &b, int &heurType) //use this function to expand all the states
+void move(Node expand, queue<Node> &a, vector<int> &b, char heurType) //use this function to expand all the states
 {
 	int expandgn = expand.gn;
 	int expandhn = expand.hn;
@@ -187,11 +183,11 @@ void move(Node expand, queue<Node> &a, vector<int> &b, int &heurType) //use this
 			if(use != expand.parent)	//checks to see if it is not a repeated state and going backwards
 			{
 				right1 = true;
-				if(heurType == 1)	//for Uniform Cost Search
+				if(heurType == '1')	//for Uniform Cost Search
 				{
 					right = Node(use, expandgn, 0, (expandDepth+1), expandgn, (expandBlank+1), modify);
 				}
-				else if(heurType == 2)	//for miss placed tile heuristic
+				else if(heurType == '2')	//for miss placed tile heuristic
 				{
 					missHeur = missPlaced(use, b);
 					right = Node(use, expandgn, missHeur, (expandDepth+1), (expandgn+missHeur), (expandBlank+1), modify);
@@ -215,11 +211,11 @@ void move(Node expand, queue<Node> &a, vector<int> &b, int &heurType) //use this
 			if(use != expand.parent)
 			{
 				left1 = true;
-				if(heurType == 1)	//for Uniform Cost Search
+				if(heurType == '1')	//for Uniform Cost Search
 				{
 					left = Node(use, expandgn, 0, (expandDepth+1), expandgn, (expandBlank-1), modify);
 				}
-				else if(heurType == 2)	//for miss placed tile heuristic
+				else if(heurType == '2')	//for miss placed tile heuristic
 				{
 					missHeur = missPlaced(use, b);
 					left = Node(use, expandgn, missHeur, (expandDepth+1), (expandgn+missHeur), (expandBlank-1), modify);
@@ -241,11 +237,11 @@ void move(Node expand, queue<Node> &a, vector<int> &b, int &heurType) //use this
 		if(use != expand.parent)	//checks to see if we are not going back to redundant node
 		{
 			up1 = true;
-			if(heurType == 1)	//for Uniform Cost Search
+			if(heurType == '1')	//for Uniform Cost Search
 			{
 				up = Node(use, expandgn, 0, (expandDepth+1), (expandgn+1), (expandBlank+3), modify);
 			}
-			else if(heurType == 2)		//for miss placed tile heuristic
+			else if(heurType == '2')		//for miss placed tile heuristic
 			{
 				missHeur = missPlaced(use, b);
 				up = Node(use, expandgn, missHeur, (expandDepth+1), (expandgn+missHeur), (expandBlank+3), modify);
@@ -266,11 +262,11 @@ void move(Node expand, queue<Node> &a, vector<int> &b, int &heurType) //use this
 		if(use != expand.parent)	//make sure we are not going backwards and revisiting a node
 		{
 			down1 = true;
-			if(heurType == 1)		//for Uniform Cost Search
+			if(heurType == '1')		//for Uniform Cost Search
 			{
 				down = Node(use, expandgn, 0, (expandDepth+1), (expandgn+1), (expandBlank-3), modify);
 			}
-			else if(heurType == 2)		//for miss placed tiles heuristic
+			else if(heurType == '2')		//for miss placed tiles heuristic
 			{
 				missHeur = missPlaced(use, b);
 				down = Node(use, expandgn, missHeur, (expandDepth+1), (expandgn+missHeur), (expandBlank-3), modify);
@@ -298,13 +294,13 @@ void move(Node expand, queue<Node> &a, vector<int> &b, int &heurType) //use this
 	{
 		a.push(down);
 	}
-	if(heurType != 1)	//only sort the queue if it is not uniform cost search, as nodes now have different total costs
+	if(heurType != '1')	//only sort the queue if it is not uniform cost search, as nodes now have different total costs
 	{
 		orderSort(a);	//call the sorting function
 	}
 }
 
-void mySearch(vector<int> &start, vector<int> &finish, int &blank, int &score)
+void mySearch(vector<int> &start, vector<int> &finish, int &blank, char score)
 {
 	queue<Node> work;	//have queue of all the nodes
 	vector<int> par;
@@ -351,138 +347,107 @@ void mySearch(vector<int> &start, vector<int> &finish, int &blank, int &score)
 	}
 }
 
-void getInput(vector<int> &store) //this function takes in the user inputs for the starting puzzle
+bool valid(vector<int> &check)
 {
-	char input;
-	int keep;
-	bool invalid = false;
-	vector<int> temp;
-	for(int i=0; i < 3; ++i)
-	{
-		cin >> input;
-		if((input < '0') || (input > '8') && (input != ' ')) //do some error checking, only take in numbers
-		{
-			invalid = true;
-		}
-		else
-		{
-			if(input != ' ') //store the inputs in a temp vector only if the input was valid and not a space
-			{
-				keep = input - '0';
-				temp.push_back(keep);
+	map<int, int> lib;
+	map<int, int>::iterator itr;
+	int num;
+	if(check.size() == 9) {
+		for(int i = 0; i < check.size(); i++) {
+			num = check.at(i);
+			if(num < 0 || num > 8) {
+				return false;
+			}
+			else {
+				itr = lib.find(num);
+				if (itr == lib.end()) {
+					lib.insert(pair<int, int>(num, 0));
+				}
+				else {
+					return false;
+				}
 			}
 		}
+		return true;
 	}
-	if(invalid) //if we found any invalid inputs, recursively call this function until proper inputs are made
-	{
-		cout << "You entered invalid characters, please re-enter your row: ";
-		temp.clear();		//make sure to wipe out the inputs before calling the function again
-		getInput(temp);
-	}
-	for(int i=0; i < temp.size(); ++i) //push the inputs back into the initial vector
-	{
-		store.push_back(temp.at(i));
+	else {
+		return false;
 	}
 }
 
-int main()
+int main(int argc, char **argv)
 {
-	vector<int> init;
-	cout << "Please enter your puzzle and use a 0 to represent a blank" << endl;
-	bool okay = false;
-	int counter = 0;
-	while(!okay) //take in user inputs until user gets proper initial puzzle set-up
-	{
-		counter = 0;
-		cout << "Enter your first row, use space to seperate inputs: ";
-		getInput(init);
-		cout << "Enter your second row, use space to seperate inputs: ";
-		getInput(init);
-		cout << "Enter your third row, use space to seperate inputs: ";
-		getInput(init);
-		for(int i=0; i < init.size(); ++i) //check if a blank space was entered only once
-		{
-			if(init.at(i) == 0)
-			{
-				counter++;
+	if(argc == 4) {
+		vector<int> init;	//where to store the initial state
+		vector<int> goal;	//our goal state
+		string hold = "";
+		int num;
+		int blankLoc = 0;
+		ifstream file;
+
+		if(*argv[3] < '1' || *argv[3] > '3'){
+			cout << "You have entered an invalid option for your algorithm selection. PLease choose either 1, 2, or 3." << endl;
+			return 0;
+		}
+
+		file.open(argv[1]);
+		while(getline(file, hold)) {	//pull the current puzzle condition 
+			istringstream iss(hold);
+			while(iss >> num){		//parse the string by space
+				init.push_back(num);	//convert to number, then save 
 			}
 		}
-		if(counter == 0)
-		{
-			cout << "You did not enter in a blank! Please re-enter your puzzle." << endl;
-			init.clear();
+		file.close();	//close file since we no longer need it
+		hold = "";
+		
+		if(!valid(init)){
+			cout << "Your initial puzzle is not correct. ";
+			cout << "Remember to have only one instance of a number from 1-8, and a 0 for your space." << endl;
+			return 0;
 		}
-		else if(counter == 1)
-		{
-			okay = true;
-		}
-		else
-		{
-			cout << "You entered too many blanks! Please re-enter your puzzle." << endl;
-			init.clear();
-		}
-	}
-	cout << endl << "Your input puzzle is: " << endl;
-	for(int i=0; i < init.size(); ++i) //output the initial puzzle to show user
-	{
-		if((i == 3) || (i == 6))
-		{
+		else {
+			cout << "This is your start state:" << endl;
+			for(int i=0; i < init.size(); ++i) {//output the initial puzzle to show user
+				if((i == 3) || (i == 6)) {
+					cout << endl;
+				}
+				cout << init.at(i) << " ";
+				if(init.at(i) == 0){
+					blankLoc = i;	//locate where the blank is initially located
+				}
+			}
 			cout << endl;
 		}
-		cout << init.at(i) << " ";
-	}
-	cout << endl;
-	vector<int> goal;	//create the goal state so we have something to compare to and know when we are done
-	goal.push_back(1);
-	goal.push_back(2);
-	goal.push_back(3);
-	goal.push_back(4);
-	goal.push_back(5);
-	goal.push_back(6);
-	goal.push_back(7);
-	goal.push_back(8);
-	goal.push_back(0);
-	
-	int blankLoc = 0;	//finds the initial blank location
-	for(int i=0; i < init.size(); ++i)
-	{
-		if(init.at(i) == 0)
-		{
-			blankLoc = i;
+
+		file.open(argv[2]);
+		while(getline(file, hold)) {	//pull the goal state 
+			istringstream iss(hold);
+			while(iss >> num){		//parse the string by space
+				goal.push_back(num);	//convert to number, then save
+			}
 		}
-	}
-	cout << "Your blank is located at: " << blankLoc << endl << endl;
-	okay = false;
-	int choice = 0;
-	while(!okay)
-	{
-		cout << "Please enter the algorithm you would like to run: " << endl;
-		cout << "1. Uniform Cost Search" << endl;
-		cout << "2. A* with Misplaced Tile Heuristic" << endl;
-		cout << "3. A* with Manhatten Heurisitc" << endl;
-		cout << "Algorithm: ";
-		cin >> choice;
-		if((choice >= 1) && (choice <= 3))
-		{
-			okay = true;
+		file.close();	//close file since we no longer need it
+
+		if(!valid(goal)) {
+			cout << "Your goal state is not correct. ";
+			cout << "Remember to have only one instance of a number from 1-8, and a 0 for your space." << endl;
+			return 0;
 		}
-		else
-		{
-			cout << "Invalid choice!" << endl;
+		else {
+			cout << "This is your goal state: " << endl;
+			for(int i = 0; i < goal.size(); i++) {
+				if ((i == 3) || (i == 6)) {
+					cout << endl;
+				}
+				cout << goal.at(i) << " ";
+			}
+			cout << endl;
 		}
+		mySearch(init, goal, blankLoc, *argv[3]);
 	}
-	cout << endl;
-	if(choice == 1)
-	{
-		mySearch(init, goal, blankLoc, choice);
-	}
-	else if(choice == 2)
-	{
-		mySearch(init, goal, blankLoc, choice);
-	}
-	else 
-	{
-		mySearch(init, goal, blankLoc, choice);
+	else {
+		cout << "You did not enter the correct amount of arguments. ";
+		cout << "Remember to enter the initial puzzle state file, goal state file, and algorithm option." << endl;
 	}
 	return 0;
 }
