@@ -26,6 +26,7 @@ void move(Node expand, queue<Node> &a, vector<int> &b, char heurType) //use this
 	bool up1 = false;
 	Node down = Node(use, 1, 0, 1, 1, 1, modify);
 	bool down1 = false;
+
 	/*cout << "Expanding state: " << endl;
 	for(int i=0; i < modify.size(); ++i) //output the current state
 	{
@@ -37,10 +38,12 @@ void move(Node expand, queue<Node> &a, vector<int> &b, char heurType) //use this
 	}
 	cout << endl;
 	cout << "With g(n) = " << expandgn << " and h(n) = " << expandhn << endl;*/
+
 	int temp = 0;
 	int missHeur = 0;
 	int manHeur = 0;
-	expandgn = expandgn + 1;
+	expandgn += 1;
+	expandDepth += 1;
 	if(check+1 <= 8)		//checks to see if we can move to the right
 	{
 		if((check != 2) && (check != 5))	//only move right if it is not on the edge
@@ -53,17 +56,17 @@ void move(Node expand, queue<Node> &a, vector<int> &b, char heurType) //use this
 				right1 = true;
 				if(heurType == '1')	//for Uniform Cost Search
 				{
-					right = Node(use, expandgn, 0, (expandDepth+1), expandgn, (expandBlank+1), modify);
+					right = Node(use, expandgn, 0, expandDepth, expandgn, (expandBlank+1), modify);
 				}
 				else if(heurType == '2')	//for miss placed tile heuristic
 				{
 					missHeur = missPlaced(use, b);
-					right = Node(use, expandgn, missHeur, (expandDepth+1), (expandgn+missHeur), (expandBlank+1), modify);
+					right = Node(use, expandgn, missHeur, expandDepth, (expandgn+missHeur), (expandBlank+1), modify);
 				}
 				else	//for manhattan distance heuristic
 				{
 					manHeur = manDist(use, b);
-					right = Node(use, expandgn, manHeur, (expandDepth+1), (expandgn+manHeur), (expandBlank+1), modify);
+					right = Node(use, expandgn, manHeur, expandDepth, (expandgn+manHeur), (expandBlank+1), modify);
 				}
 			}
 		}
@@ -81,68 +84,68 @@ void move(Node expand, queue<Node> &a, vector<int> &b, char heurType) //use this
 				left1 = true;
 				if(heurType == '1')	//for Uniform Cost Search
 				{
-					left = Node(use, expandgn, 0, (expandDepth+1), expandgn, (expandBlank-1), modify);
+					left = Node(use, expandgn, 0, expandDepth, expandgn, (expandBlank-1), modify);
 				}
 				else if(heurType == '2')	//for miss placed tile heuristic
 				{
 					missHeur = missPlaced(use, b);
-					left = Node(use, expandgn, missHeur, (expandDepth+1), (expandgn+missHeur), (expandBlank-1), modify);
+					left = Node(use, expandgn, missHeur, expandDepth, (expandgn+missHeur), (expandBlank-1), modify);
 				}
 				else		//for manhattan distance heuristic
 				{
 					manHeur = manDist(use, b);
-					left = Node(use, expandgn, manHeur, (expandDepth+1), (expandgn+manHeur), (expandBlank-1), modify);
+					left = Node(use, expandgn, manHeur, expandDepth, (expandgn+manHeur), (expandBlank-1), modify);
 				}
 			}
 		}
 	}
 	use = modify;
-	if(check+3 <= 8)		//check to see if we can move blank up
+	if(check+3 <= 8)		//check to see if we can move blank down
 	{
 		temp = use.at(check);
 		use.at(check) = use.at(check+3);
 		use.at(check+3) = temp;
 		if(use != expand.parent)	//checks to see if we are not going back to redundant node
 		{
-			up1 = true;
+			down1 = true;
 			if(heurType == '1')	//for Uniform Cost Search
 			{
-				up = Node(use, expandgn, 0, (expandDepth+1), (expandgn+1), (expandBlank+3), modify);
+				down = Node(use, expandgn, 0, expandDepth, expandgn, (expandBlank+3), modify);
 			}
 			else if(heurType == '2')		//for miss placed tile heuristic
 			{
 				missHeur = missPlaced(use, b);
-				up = Node(use, expandgn, missHeur, (expandDepth+1), (expandgn+missHeur), (expandBlank+3), modify);
+				down = Node(use, expandgn, missHeur, expandDepth, (expandgn+missHeur), (expandBlank+3), modify);
 			}
 			else		//for manhattan distance heuristic
 			{
 				manHeur = manDist(use, b);
-				up = Node(use, expandgn, manHeur, (expandDepth+1), (expandgn+manHeur), (expandBlank+3), modify);
+				down = Node(use, expandgn, manHeur, expandDepth, (expandgn+manHeur), (expandBlank+3), modify);
 			}
 		}
 	}
 	use = modify;
-	if(check-3 >= 0)	//checks to see if we can move blank down
+	if(check-3 >= 0)	//checks to see if we can move blank up
 	{
 		temp = use.at(check);
 		use.at(check) = use.at(check-3);
 		use.at(check-3) = temp;
 		if(use != expand.parent)	//make sure we are not going backwards and revisiting a node
 		{
-			down1 = true;
+			up1 = true;
 			if(heurType == '1')		//for Uniform Cost Search
 			{
-				down = Node(use, expandgn, 0, (expandDepth+1), (expandgn+1), (expandBlank-3), modify);
+				up = Node(use, expandgn, 0, expandDepth, expandgn, (expandBlank-3), modify);
 			}
 			else if(heurType == '2')		//for miss placed tiles heuristic
 			{
 				missHeur = missPlaced(use, b);
-				down = Node(use, expandgn, missHeur, (expandDepth+1), (expandgn+missHeur), (expandBlank-3), modify);
+				up = Node(use, expandgn, missHeur, expandDepth, (expandgn+missHeur), (expandBlank-3), modify);
 			}
 			else		//for manhattan distance heuristic
 			{
 				manHeur = manDist(use, b);
-				down = Node(use, expandgn, manHeur, (expandDepth+1), (expandgn+manHeur), (expandBlank-3), modify);
+				up = Node(use, expandgn, manHeur, expandDepth, (expandgn+manHeur), (expandBlank-3), modify);
 			}
 		}
 	}
