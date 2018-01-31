@@ -12,7 +12,7 @@ To get ASTAR and run it, please open up a terminal and run these commands:
 git clone https://github.com/ykamo001/PathFinder.git
 cd PathFinder/
 make
-./src/astar.out
+./src/astar.out ./puzzles/init.txt ./puzzles/goal.txt 3
 ```
 
 With my implementation, after you have entered in a desired puzzle to solve, you are able to pick a search algorithm.
