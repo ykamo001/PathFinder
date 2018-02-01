@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 			return 0;
 		}
 		else {
-			cout << "This is your start state:" << endl;
+			cout << "Start state:" << endl;
 			for(int i=0; i < init.size(); ++i) {//output the initial puzzle to show user
 				if((i == 3) || (i == 6)) {
 					cout << endl;
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 					blankLoc = i;	//locate where the blank is initially located
 				}
 			}
-			cout << endl;
+			cout << endl << endl;
 		}
 
 		file.open(argv[2]);
@@ -73,14 +73,14 @@ int main(int argc, char **argv)
 			return 0;
 		}
 		else {
-			cout << "This is your goal state: " << endl;
+			cout << "Goal state: " << endl;
 			for(int i = 0; i < goal.size(); i++) {
 				if ((i == 3) || (i == 6)) {
 					cout << endl;
 				}
 				cout << goal.at(i) << " ";
 			}
-			cout << endl;
+			cout << endl << endl;
 		}
 		mySearch(init, goal, blankLoc, *argv[3]);
 	}
